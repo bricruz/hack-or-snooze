@@ -50,3 +50,30 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+// function submitAddStory() {
+//   let story = {};
+//   $author = $('#author-name').val();
+//   $title = $('#story-title').val();
+//   $url = $('#story-url').val();
+//   story.title = $title;
+//   story.author = $author;
+//   story.url = $url;
+//   console.log(({ ...story }));
+// }
+
+async function submitAddStory(e) {
+  e.preventDefault();
+  let story = {};
+
+  $('#story-url').val();
+  story.title = $('#story-title').val();
+  story.author = $('#author-name').val();
+  story.url = $('#story-url').val();
+  console.log(({ ...story }));
+  await storyList.addStory(currentUser, { ...story });
+
+}
+$('#story-form').on('click', $('#submit-button'), submitAddStory);
+
+
