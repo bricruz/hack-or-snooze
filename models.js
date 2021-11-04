@@ -212,5 +212,18 @@ class User {
 
   addFav(story) {
     this.favorites.push(story);
+
   }
+  //favorites
+  static putFavesOnPage() {
+    $allStoriesList.empty();
+    for (let story of currentUser.favorites) {
+      let newStory = new Story(story);
+      let $story = generateFaveMarkup(newStory);
+      $allStoriesList.append($story);
+    }
+    $allStoriesList.show();
+  }
+
 }
+
