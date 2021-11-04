@@ -44,3 +44,4 @@ function submitClick(evt) {
 }
 $submitStory.on("click", submitClick);
 
+$('.navbar-brand').on('click', '#favorite', User.putFavesOnPage);
