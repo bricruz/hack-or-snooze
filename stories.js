@@ -3,6 +3,7 @@
 // This is the global list of the stories, an instance of StoryList
 let storyList;
 
+
 /** Get and show stories when site first loads. */
 
 async function getAndShowStoriesOnStart() {
@@ -34,7 +35,21 @@ function generateStoryMarkup(story) {
       </li>
     `);
 }
+function generateFaveMarkup(story) {
+  // console.debug("generateStoryMarkup", story);
 
+  const hostName = story.getHostName();
+  return $(`
+      <li id="${story.storyId}">
+        <a href="${story.url}" target="a_blank" class="story-link">
+          ${story.title}
+        </a>
+        <small class="story-hostname">(${hostName})</small>
+        <small class="story-author">${story.author}</small>
+        <small class="story-user">${story.username}</small>
+      </li>
+    `);
+}
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage() {
@@ -50,6 +65,8 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+
 
 // function submitAddStory() {
 //   let story = {};
@@ -75,5 +92,6 @@ async function submitAddStory(e) {
 
 }
 $('#story-form').on('click', $('#submit-button'), submitAddStory);
+
 
 
