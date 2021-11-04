@@ -127,13 +127,16 @@ $('.stories-container').on('click', 'span', function (evt) {
     $target[0].className = 'empty';
   }
   // storyId, title, author, url, username, createdAt
-  let newStory = { storyID, storyTitle, storyAuthor, storyUrl, storyUser };
+  let newStory = { storyId: storyID, title: storyTitle, author: storyAuthor, url: storyUrl, username: storyUser };
   currentUser.addFav(newStory);
 
-  console.log($target.siblings());
-  console.log($target.parent()[0].id);
+  // console.log($target.siblings());
+  // console.log($target.parent()[0].id);
+  console.log(newStory);
 
 })
+
+
 
 function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
@@ -143,3 +146,4 @@ function updateUIOnUserLogin() {
   $('li').prepend(starEmpty);
   updateNavOnLogin();
 }
+
