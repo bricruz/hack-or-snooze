@@ -12,13 +12,14 @@ class Story {
    *   - {title, author, url, username, storyId, createdAt}
    */
 
-  constructor({ storyId, title, author, url, username, createdAt }) {
+  constructor({ storyId, title, author, url, username, createdAt, spanID }) {
     this.storyId = storyId;
     this.title = title;
     this.author = author;
     this.url = url;
     this.username = username;
     this.createdAt = createdAt;
+    this.spanID = spanID;
   }
 
   /** Parses hostname out of URL and returns it. */
@@ -117,6 +118,11 @@ class User {
     this.createdAt = createdAt;
 
     // instantiate Story instances for the user's favorites and ownStories
+    if (JSON.parse(localStorage.getItem('faves')) != null) {
+      for (let i = 0; i < JSON.parse(localStorage.getItem('faves')).length; i++) {
+        favorites.push(JSON.parse(localStorage.getItem('faves'))[i]);
+      }
+    }
     this.favorites = favorites.map(s => new Story(s));
     this.ownStories = ownStories.map(s => new Story(s));
 
@@ -210,9 +216,31 @@ class User {
     }
   }
 
-  addFav(story) {
-    this.favorites.push(story);
+  // static async addFavorite(id, user) {
+  //   const token = user.loginToken;
+  //   const favorite = await axios({
+  //     url: `${BASE_URL}/users/${user}/favorites/${id}`,
+  //     method: 'POST',
+  //     data: { token }
 
+  //   });
+  //   return favorite;
+  // }
+
+  addFav(story) {
+
+    this.favorites.push(story);
+    localStorage.setItem('faves', JSON.stringify(this.favorites));
+  }
+
+  removeFav(id) {
+    localStorage.removeItem('faves', JSON.stringify(this.favorites));
+    let faves = this.favorites.filter(story => story.spanID != id);
+    this.favorites = faves;
+    localStorage.setItem('faves', JSON.stringify(this.favorites));
+
+
+    // $(`#${id}`).parent().remove();
   }
   //favorites
   static putFavesOnPage() {
@@ -220,10 +248,14 @@ class User {
     for (let story of currentUser.favorites) {
       let newStory = new Story(story);
       let $story = generateFaveMarkup(newStory);
+
       $allStoriesList.append($story);
+
     }
     $allStoriesList.show();
   }
 
+
 }
+
 
