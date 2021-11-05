@@ -117,24 +117,35 @@ $('.stories-container').on('click', 'span', function (evt) {
   let storyAuthor = $target.siblings()[2].innerText;
   let storyUrl = $target.siblings()[0].href;
   let storyUser = $target.siblings()[3].innerText;
+  let spanID = $target[0].id;
 
-  if ($target[0].className === 'empty') {
+  if ($target[0].className == ('empty') || $target[0].className == ('hidden empty')) {
     $target[0].innerHTML = '&starf;';
     $target[0].className = 'full'
-
+    // storyId, title, author, url, username, createdAt
+    let newStory = { storyId: storyID, title: storyTitle, author: storyAuthor, url: storyUrl, username: storyUser, spanID: spanID };
+    currentUser.addFav(newStory);
+    // User.addFavorite(currentUser, newStory.storyID);
   } else {
+    currentUser.removeFav(spanID);
+    console.log('confused');
     $target[0].innerHTML = '&star;';
     $target[0].className = 'empty';
+
   }
-  // storyId, title, author, url, username, createdAt
-  let newStory = { storyId: storyID, title: storyTitle, author: storyAuthor, url: storyUrl, username: storyUser };
-  currentUser.addFav(newStory);
+
 
   // console.log($target.siblings());
   // console.log($target.parent()[0].id);
-  console.log(newStory);
+  // console.log(newStory);
 
 })
+
+function spanIDs() {
+  for (let i = 0; i < $('span').length; i++) {
+    $('span').eq(i).attr('id', `${i}`);
+  }
+}
 
 
 
@@ -143,7 +154,8 @@ function updateUIOnUserLogin() {
 
   $allStoriesList.show();
   $('#favorite').show();
-  $('li').prepend(starEmpty);
+  $('span').show();
+  spanIDs();
   updateNavOnLogin();
 }
 
