@@ -9,7 +9,14 @@
 function navAllStories(evt) {
   console.debug("navAllStories", evt);
   hidePageComponents();
-  putStoriesOnPage();
+  if (currentUser !== undefined) {
+    putStoriesOnPageLI();
+    console.log('put stories on page LI');
+    $('span').show();
+  }
+  else { putStoriesOnPage(); }
+
+  spanIDs();
 }
 
 $body.on("click", "#nav-all", navAllStories);
