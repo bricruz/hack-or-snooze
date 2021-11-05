@@ -10,7 +10,12 @@ async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
   $storiesLoadingMsg.remove();
 
-  putStoriesOnPage();
+  if (currentUser !== undefined) {
+    putStoriesOnPageLI();
+    console.log('put stories on page LI');
+    $('span').show();
+  }
+  else { putStoriesOnPage(); }
 }
 
 /**
@@ -26,6 +31,7 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+      <span id="${story.spanID}" class="hidden empty">&star;</span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -41,6 +47,7 @@ function generateFaveMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+      <span id="${story.spanID}" class="full">&starf;</span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -66,7 +73,28 @@ function putStoriesOnPage() {
   $allStoriesList.show();
 }
 
+function putStoriesOnPageLI() {
+  console.debug("putStoriesOnPage");
 
+  $allStoriesList.empty();
+
+  // loop through all of our stories and generate HTML for them
+  for (let story of storyList.stories) {
+    const $story = generateStoryMarkup(story);
+
+    for (let fave of currentUser.favorites) {
+      if (story.storyId === fave.storyId) {
+        $story.children('span').html('&starf;');
+        $story.children('span').attr('class', 'full');
+        console.log('this shouldve worked');
+      }
+    }
+    $allStoriesList.append($story);
+
+  }
+
+  $allStoriesList.show();
+}
 
 // function submitAddStory() {
 //   let story = {};
@@ -92,6 +120,8 @@ async function submitAddStory(e) {
 
 }
 $('#story-form').on('click', $('#submit-button'), submitAddStory);
+
+
 
 
 
